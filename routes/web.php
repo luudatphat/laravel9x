@@ -44,3 +44,4 @@ Route::get('/server', ProvisionServer::class);
 Route::controller(VersionController::class)->prefix('version')->name('version.')->group(function () {
     Route::get('/test', 'index')->middleware('token');
 });
+// test
