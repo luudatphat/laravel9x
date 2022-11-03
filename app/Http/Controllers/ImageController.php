@@ -5,17 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Requests\UpdateImageRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class ImageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return view
      */
     public function index()
     {
-        //
+
+        // if (View::exists('formcsrssf')) {
+        //     dd('Có');
+        // }
+        // return response('Hello World', 200)->header('Content-Type', 'text/plain');
+        return view('formcsrf', ['name' => 'James']);
     }
 
     /**
@@ -23,9 +30,29 @@ class ImageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        // $url = $request->url();
+        // $urlWithQueryString = $request->fullUrl();
+
+        // $host = $request->host();
+        // $httpHost = $request->httpHost();
+        // $schemeAndHttpHost = $request->schemeAndHttpHost();
+        // $method = $request->method();
+
+        // $xHeaderName = $request->header('X-Header-Name');
+
+        // $xHeaderNameAndDefault = $request->header('X-Header-Name', 'default');
+        // $token = $request->bearerToken();
+        // $ipAddress = $request->ip();
+        // dd( $ipAddress, $token);
+
+        // $input = $request->collect();
+        // $name = $request->input('name', 'Sally');
+
+        $name = $request->query('name');
+        $flash = $request->flash();
+        dd($flash);
     }
 
     /**

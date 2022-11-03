@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProvisionServer;
 use App\Http\Controllers\VersionController;
@@ -45,3 +46,6 @@ Route::controller(VersionController::class)->prefix('version')->name('version.')
     Route::get('/test', 'index')->middleware('token');
 });
 // test
+
+Route::get('/form-csrf', [ImageController::class, 'index']);
+Route::post('/form-csrf', [ImageController::class, 'create']);
