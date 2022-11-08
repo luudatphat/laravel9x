@@ -3,6 +3,7 @@
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProvisionServer;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
@@ -49,3 +50,6 @@ Route::controller(VersionController::class)->prefix('version')->name('version.')
 
 Route::get('/form-csrf', [ImageController::class, 'index']);
 Route::post('/form-csrf', [ImageController::class, 'create']);
+
+Route::get('test', [TestController::class, 'index']);
+Route::post('test', [TestController::class, 'index']);

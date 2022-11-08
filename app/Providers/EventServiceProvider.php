@@ -28,6 +28,10 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Event::listen(
+            PodcastProcessed::class,
+            [SendPodcastNotification::class, 'handle']
+        );
     }
 
     /**
