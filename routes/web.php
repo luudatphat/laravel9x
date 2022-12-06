@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProvisionServer;
@@ -21,9 +22,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 
 
@@ -53,3 +54,8 @@ Route::post('/form-csrf', [ImageController::class, 'create']);
 
 Route::get('test', [TestController::class, 'index']);
 Route::post('test', [TestController::class, 'index']);
+
+
+// Embed app
+Route::get('', [AuthController::class, 'index'])->middleware('shopify.auth');
+Route::get('/auth/callback ', [AuthController::class, 'auth']);

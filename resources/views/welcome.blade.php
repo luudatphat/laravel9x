@@ -565,23 +565,24 @@
             </div>
         </div>
     </div>
+    <script src="/app_bridge.js" type="javascript"></script>
     <script type='text/javascript'>
-        window.$linebase = [];
-        window.LINEBASE_INIT_TRIGGER = function() {
-            contact = $linebase.get("contact", "first_name");
-            contact.then((value) => {
-                console.log(value);
-            })
-        };
-        window.LINEBASE_ORG_ID = '6347e2a59a18725062944e91';
-        window.LINEBASE_WORKSPACE_ID = '6347e2a59a187230d3944e93';
-        (function() {
-            d = document;
-            s = d.createElement('script');
-            s.src = 'https://cw.linebase.io/main.js';
-            s.async = 1;
-            d.getElementsByTagName('head')[0].appendChild(s);
-        })();
+        // window.$linebase = [];
+        // window.LINEBASE_INIT_TRIGGER = function() {
+        //     contact = $linebase.get("contact", "first_name");
+        //     contact.then((value) => {
+        //         console.log(value);
+        //     })
+        // };
+        // window.LINEBASE_ORG_ID = '6347e2a59a18725062944e91';
+        // window.LINEBASE_WORKSPACE_ID = '6347e2a59a187230d3944e93';
+        // (function() {
+        //     d = document;
+        //     s = d.createElement('script');
+        //     s.src = 'https://cw.linebase.io/main.js';
+        //     s.async = 1;
+        //     d.getElementsByTagName('head')[0].appendChild(s);
+        // })();
     </script>
 </body>
 
