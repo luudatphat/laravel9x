@@ -2,15 +2,12 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Session;
+use App\Models\Session as ModelsSession;
 use Closure;
 use Illuminate\Http\Request;
-use Shopify\Auth\OAuth;
-use Shopify\Auth\OAuthCookie;
-use Shopify\Context;
-use Shopify\Utils;
-use App\Lib\DbSessionStorage;
-use Shopify\ApiVersion;
+use Gnikyt\BasicShopifyAPI\BasicShopifyAPI;
+use Gnikyt\BasicShopifyAPI\Options;
+use Gnikyt\BasicShopifyAPI\Session;
 
 class AuthShopify
 {
@@ -23,48 +20,34 @@ class AuthShopify
      */
     public function handle(Request $request, Closure $next)
     {
-        Context::initialize(
-            env('SHOPIFY_API_KEY', 'not_defined'),
-            env('SHOPIFY_API_SECRET', 'not_defined'),
-            env('SCOPES', 'not_defined'),
-            'https://2df1-42-96-52-2.ap.ngrok.io',
-            new DbSessionStorage(),
-            ApiVersion::LATEST,
-            true,
-            false,
-        );
+        $isEmbeddApp = $request->query('embedded');
+        $shop = $request->query('shop');
 
-        $shop = $request->query('shop') ? Utils::sanitizeShopDomain($request->query('shop')) : null;
+        // Shopify
+        $options = new Options();
+        $options->setType(true); // Makes it private
+        $options->setVersion(config('shopify.version'));
+        $options->setApiKey(config('shopify.api_key'));
+        // $options->setApiPassword(config('shopify.secret_key'));
 
-        $appInstalled = $shop && Session::where('shop', $shop)->where('access_token', '<>', null)->exists();
+        // Create the client and session
+        $api = new BasicShopifyAPI($options);
+        $api->setSession(new Session($request->query('shop')));
 
-        // Embedded App
-        if ($request->query("embedded", false)) {
-            dd("embedded");
-            return redirect(Utils::getEmbeddedAppUrl($request->query("host", null)) . "/" . $request->path());
+        $shopInfo = ModelsSession::where('shop', $shop)->where('access_token', '<>', null)->exists();
+
+        if(!$isEmbeddApp && !$shopInfo){
+            $installApp = $api->getAuthUrl(config('shopify.scope'), env('APP_URL') . '/auth/callback');
+            return redirect($installApp);
         }
 
+        $code = $request->query('code');
 
-        // Install app
-        if ($shop && !$appInstalled) {
-            // $urlInstall = OAuth::begin($shop, '/auth', $isOnline = false);
-            $cookiesSet = [];
-            $cookieCallback = function (OAuthCookie $cookie) use (&$cookiesSet) {
-                $cookiesSet[$cookie->getName()] = $cookie;
-                return !empty($cookie->getValue());
-            };
+        $baseUrl = $api->getRestClient()->getBaseUri();
+        $shopInShopify = $api->getRestClient()->request('GET', '/admin/shop.json');
+        $accessToken =  $api->requestAccessToken($code);
+        dd($baseUrl, $shopInShopify, $accessToken);
 
-            $urlInstall = OAuth::begin(
-                $shop,
-                '/auth/callback',
-                $isOnline = false,
-                $cookieCallback,
-            );
-            dd('install', $urlInstall);
-            return redirect($urlInstall);
-        }
-
-        dd("Next");
         return $next($request);
     }
 }

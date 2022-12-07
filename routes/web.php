@@ -58,4 +58,4 @@ Route::post('test', [TestController::class, 'index']);
 
 // Embed app
 Route::get('', [AuthController::class, 'index'])->middleware('shopify.auth');
-Route::get('/auth/callback ', [AuthController::class, 'auth']);
+Route::get('/auth/callback', [AuthController::class, 'auth']);
