@@ -4,7 +4,7 @@ return [
     'api_key'       => env('API_KEY', null),
     'secret_key'    => env('API_SECRET', null),
     'embedded_app'  => env('SHOPIFY_EMBEDDED_APP', true),
-    'version'       => '2020-01',
+    'version'       => '2020-10',
     'scope'         => [
         'read_products',
         'write_products',

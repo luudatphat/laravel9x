@@ -2,12 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Session as ModelsSession;
+use App\Repository\UserRepository;
+use App\Services\Shopify\ApiShopifyService;
 use Closure;
 use Illuminate\Http\Request;
-use Gnikyt\BasicShopifyAPI\BasicShopifyAPI;
-use Gnikyt\BasicShopifyAPI\Options;
-use Gnikyt\BasicShopifyAPI\Session;
+use Illuminate\Support\Facades\Log;
 
 class AuthShopify
 {
@@ -23,30 +22,19 @@ class AuthShopify
         $isEmbeddApp = $request->query('embedded');
         $shop = $request->query('shop');
 
-        // Shopify
-        $options = new Options();
-        $options->setType(true); // Makes it private
-        $options->setVersion(config('shopify.version'));
-        $options->setApiKey(config('shopify.api_key'));
-        // $options->setApiPassword(config('shopify.secret_key'));
+        // Shop
+        $userRepo = new UserRepository();
+        $user = $userRepo->getShop($shop);
+        // Log::debug('login', $request->all());
 
-        // Create the client and session
-        $api = new BasicShopifyAPI($options);
-        $api->setSession(new Session($request->query('shop')));
+        if (empty($user) || empty($user->access_token) || !$isEmbeddApp) {
+            // Shopify
+            $api = new ApiShopifyService();
+            $api->setShop($shop);
 
-        $shopInfo = ModelsSession::where('shop', $shop)->where('access_token', '<>', null)->exists();
-
-        if(!$isEmbeddApp && !$shopInfo){
-            $installApp = $api->getAuthUrl(config('shopify.scope'), env('APP_URL') . '/auth/callback');
-            return redirect($installApp);
+            $urlInstall = $api->installShopify();
+            return redirect($urlInstall);
         }
-
-        $code = $request->query('code');
-
-        $baseUrl = $api->getRestClient()->getBaseUri();
-        $shopInShopify = $api->getRestClient()->request('GET', '/admin/shop.json');
-        $accessToken =  $api->requestAccessToken($code);
-        dd($baseUrl, $shopInShopify, $accessToken);
 
         return $next($request);
     }

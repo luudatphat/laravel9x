@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Session as ModelsSession;
-use Gnikyt\BasicShopifyAPI\BasicShopifyAPI;
-use Gnikyt\BasicShopifyAPI\Options;
-use Gnikyt\BasicShopifyAPI\Session;
 use Illuminate\Http\Request;
+use App\Repository\UserRepository;
+use App\Services\Shopify\ApiShopifyService;
 
 class AuthController extends Controller
 {
@@ -15,33 +13,44 @@ class AuthController extends Controller
         return view('welcome');
     }
 
-    public function auth(Request $request)
+    public function auth(Request $request, UserRepository $userRepo)
     {
         $shop = $request->query('shop');
         $host = $request->query('host');
         $code = $request->query('code');
 
         // Shopify
-        $options = new Options();
-        $options->setType(false)
-            ->setVersion(config('shopify.version'))
-            ->setApiKey(config('shopify.api_key'))
-            ->setApiSecret(config('shopify.secret_key'));
-            // ->setApiPassword('abc');;
+        $api = new ApiShopifyService();
+        $api->setShop($shop);
 
-        // Create the client and session
-        $api = new BasicShopifyAPI($options);
-        $api->setSession(new Session($request->query('shop')));
+        $shopInfoApi = $api->getShop($code);
+        $shopInfoApi = $shopInfoApi['body']['container']['shop'];
 
+        $recordShop = [
+            'shop_id'       => $shopInfoApi['id'],
+            'shop_name'     => $shopInfoApi['myshopify_domain'] ?? null,
+            'domain'        => $shopInfoApi['domain'] ?? null,
+            'shop_email'    => $shopInfoApi['email'] ?? null,
+            'name'          => $shopInfoApi['name'] ?? null,
+            'shop_phone'    => $shopInfoApi['phone'] ?? null,
+            'shop_status'   => 1,
+            'shop_country'  => $shopInfoApi['country'] ?? null,
+            'shop_owner'    => $shopInfoApi['shop_owner'] ?? null,
+            'plan_name'     => $shopInfoApi['plan_name'] ?? null,
+            'app_plan'      => '',
+            'access_token'  => $api->getAccessToken(),
+            'currency'      => $shopInfoApi['currency'] ?? null,
+        ];
 
-        $baseUrl = $api->getRestClient()->getBaseUri();
-        // $shopInShopify = $api->getRestClient()->request('GET', '/admin/shop.json');
-        // $accessToken =  $api->requestAndSetAccess($code);
+        // save info shop
+        $userRepo->createShop($shop, $recordShop);
 
-        // $api->requestAndSetAccess($code);
+        // Đk webhook ( nếu có thời gian để làm)
 
-        // You can now make API calls
-        $result = $api->requestAccessToken($code);
-        // $response = $api->rest('GET', '/admin/shop.json'););
+        // Chuyển vào trang admin
+
+        $decodedHost = base64_decode($host, true);
+        $redirectUrl =  "https://$decodedHost/apps/" . config('shopify.api_key');
+        return redirect($redirectUrl);
     }
 }
