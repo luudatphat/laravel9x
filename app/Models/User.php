@@ -19,19 +19,22 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'id',
-        'shop_name',
-        'shop_email',
-        'shop_id',
-        'domain',
+        // 'shop_name',
+        // 'shop_email',
+        // 'shop_id',
+        // 'domain',
+        // 'name',
+        // 'shop_phone',
+        // 'shop_status',
+        // 'shop_country',
+        // 'shop_owner',
+        // 'plan_name',
+        // 'app_plan',
+        // 'access_token',
+        // 'currency'
         'name',
-        'shop_phone',
-        'shop_status',
-        'shop_country',
-        'shop_owner',
-        'plan_name',
-        'app_plan',
-        'access_token',
-        'currency'
+        'email',
+        'password',
     ];
 
     /**
@@ -40,15 +43,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'password',
         'remember_token',
     ];
 
-    // /**
-    //  * The attributes that should be cast.
-    //  *
-    //  * @var array<string, string>
-    //  */
-    // protected $casts = [
-    //     'email_verified_at' => 'datetime',
-    // ];
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

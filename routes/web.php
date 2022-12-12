@@ -10,6 +10,7 @@ use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,25 +38,42 @@ use Illuminate\Support\Facades\Route;
 // Route::put('/photos/{photo}', [PhotoController::class, 'update']);
 // Route::delete('/photos/{photo}', [PhotoController::class, 'destroy']);
 
-Route::resource('photos', PhotoController::class)
-    ->missing(function (Request $request) {
-        return Redirect::route('photos.index');
-    });
+// Route::resource('photos', PhotoController::class)
+//     ->missing(function (Request $request) {
+//         return Redirect::route('photos.index');
+//     });
 
-Route::get('/server', ProvisionServer::class);
+// Route::get('/server', ProvisionServer::class);
 
-Route::controller(VersionController::class)->prefix('version')->name('version.')->group(function () {
-    Route::get('/test', 'index')->middleware('token');
+// Route::controller(VersionController::class)->prefix('version')->name('version.')->group(function () {
+//     Route::get('/test', 'index')->middleware('token');
+// });
+// // test
+
+// Route::get('/form-csrf', [ImageController::class, 'index']);
+// Route::post('/form-csrf', [ImageController::class, 'create']);
+
+// Route::get('test', [TestController::class, 'index']);
+// Route::post('test', [TestController::class, 'index']);
+
+
+// // Embed app
+// Route::get('', [AuthController::class, 'index'])->middleware('shopify.auth');
+// Route::get('/auth/callback', [AuthController::class, 'auth']);
+
+
+Route::get('/', function () {
+    return view('welcome');
 });
-// test
 
-Route::get('/form-csrf', [ImageController::class, 'index']);
-Route::post('/form-csrf', [ImageController::class, 'create']);
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('test', [TestController::class, 'index']);
-Route::post('test', [TestController::class, 'index']);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-
-// Embed app
-Route::get('', [AuthController::class, 'index'])->middleware('shopify.auth');
-Route::get('/auth/callback', [AuthController::class, 'auth']);
+require __DIR__ . '/auth.php';
