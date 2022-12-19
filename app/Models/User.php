@@ -24,6 +24,7 @@ class User extends Authenticatable
         'shop_id',
         'domain',
         'name',
+        'email',
         'shop_phone',
         'shop_status',
         'shop_country',
@@ -31,7 +32,8 @@ class User extends Authenticatable
         'plan_name',
         'app_plan',
         'access_token',
-        'currency'
+        'currency',
+        'password'
     ];
 
     /**

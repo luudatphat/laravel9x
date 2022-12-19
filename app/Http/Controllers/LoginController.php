@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\LoginRequest;
+use App\Repository\UserRepository;
+use App\Services\LoginService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class LoginController extends Controller
+{
+    public function index()
+    {
+        return view('login');
+    }
+
+    public function login(LoginRequest $request, LoginService $loginService)
+    {
+        if ($loginService->login($request->email, $request->password)) {
+            return to_route('home');
+        }
+        return back()->withErrors('Check email or password');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/');
+    }
+
+    public function register()
+    {
+        return view('register');
+    }
+
+    public function createRegister(LoginRequest $request, LoginService $loginService)
+    {
+        $register =  $loginService->register($request->email, $request->password);
+        if ($register['status']) {
+            return to_route('home');
+        }
+        return back()->withErrors($register['message']);
+    }
+}

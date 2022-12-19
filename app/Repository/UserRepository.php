@@ -26,4 +26,14 @@ class UserRepository
     {
         return $this->model->where('domain', $domain)->update($data);
     }
+
+    public function getUserByEmail(string $email)
+    {
+        return $this->model->where('email', $email)->first();
+    }
+
+    public function createUserByEmail(array $data)
+    {
+        return $this->model->create($data);
+    }
 }
