@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Admin;
 use App\Repository\UserRepository;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -17,15 +18,18 @@ class LoginService
         $this->userRepository = $userRepository;
     }
 
-    public function login(string $email, string $password)
+    public function login(string $email, string $password, string $type = 'user')
     {
-        if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
-            return true;
+        if ($type == 'user') {
+            $login = Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1]);
+        } else {
+
+            $login = Auth::guard('admin')->attempt(['email' => $email, 'password' => $password, 'active' => 1]);
         }
-        return false;
+        return $login;
     }
 
-    public function register(string $email, string $password)
+    public function register(string $email, string $password, string $type = 'user')
     {
         $response = [
             'status' => false,
@@ -33,16 +37,13 @@ class LoginService
         ];
 
         try {
-            $infoUser = $this->userRepository->getUserByEmail($email);
-            if ($infoUser) {
-                $response['message'] = 'email isset';
+            $checkAndCreateInfo = $type == 'user' ? $this->registerUser($email, $password) : $this->registerAdmin($email, $password);
+            if (!$checkAndCreateInfo) {
+                $response['message'] = "email {$type} isset";
                 return $response;
             }
-// dd(['email' => $email, 'password' => Hash::make($password)]);
-            $this->userRepository->createUserByEmail(['email' => $email, 'password' => Hash::make($password)]);
-            $this->login($email, $password);
+            $this->login($email, $password, $type);
         } catch (Exception $e) {
-            dd($e);
             \Debugbar::error($e);
             return $response;
         }
@@ -50,5 +51,33 @@ class LoginService
             'status' => true,
             'message' => 'Success',
         ];
+    }
+
+    public function registerUser(string $email, string $password)
+    {
+        $infoUser = $this->userRepository->getUserByEmail($email);
+        if ($infoUser) {
+            return false;
+        }
+        $this->userRepository->createUserByEmail(['email' => $email, 'password' => Hash::make($password)]);
+        return true;
+    }
+
+    public function registerAdmin(string $email, string $password)
+    {
+        $infoUser = Admin::where('email', $email)->get();
+        if ($infoUser) {
+            return false;
+        }
+
+        // create
+        Admin::create(
+            [
+                'email'     => $email,
+                'name'      => 'ppp',
+                'password'  =>  Hash::make($password)
+            ]
+        );
+        return true;
     }
 }

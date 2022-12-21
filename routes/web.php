@@ -28,22 +28,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['guest'])->group(function () {
+Route::middleware(['guest:admin'])->group(function () {
     // Login
     Route::get('login', [LoginController::class, 'index'])->name('login');
     Route::post('login', [LoginController::class, 'login']);
-
 
     // Register 
     Route::get('register', [LoginController::class, 'register'])->name('register');
     Route::post('register', [LoginController::class, 'createRegister']);
 });
 
-// Logout
-Route::get('logout', [LoginController::class, 'logout'])->middleware('auth');
+Route::middleware([])->group(function () {
+    // Logout
+    Route::get('logout', [LoginController::class, 'logout']);
 
-// Home
-Route::get('home', [DasboardController::class, 'index'])->name('home')->middleware('auth');
+    // Home
+    Route::get('home', [DasboardController::class, 'index'])->name('home');
+    Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
+});
+
 
 // Route::get('/photos', [PhotoController::class, 'index']);
 // Route::get('/photos/create', [PhotoController::class, 'create']);
