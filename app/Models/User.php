@@ -41,4 +41,44 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function phone()
+    {
+        // One To One
+        // Lấy thông tin phone , khi bảng Phone có khóa ngoại là chưa id user (vd : user_id)
+        return $this->hasOne(Phone::class);
+    }
+
+    /**
+     * Get the user's most recent order.
+     */
+    public function latestOrder()
+    {
+        return $this->hasOne(Order::class)->latestOfMany();
+    }
+
+    /**
+     * Get the user's oldest order.
+     */
+    public function oldestOrder()
+    {
+        return $this->hasOne(Order::class)->oldestOfMany();
+    }
+
+    /**
+     * Get the user's largest order.
+     */
+    public function largestOrder()
+    {
+        // ofMany(max, min)
+        return $this->hasOne(Order::class)->ofMany('price', 'max');
+    }
+
+    /**
+     * The roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

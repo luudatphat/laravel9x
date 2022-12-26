@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ProvisionServer;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('/test', [TestController::class, 'test']);
 
 
 // Route::get('/photos', [PhotoController::class, 'index']);
@@ -34,13 +35,13 @@ Route::get('/', function () {
 // Route::put('/photos/{photo}', [PhotoController::class, 'update']);
 // Route::delete('/photos/{photo}', [PhotoController::class, 'destroy']);
 
-Route::resource('photos', PhotoController::class)
-    ->missing(function (Request $request) {
-        return Redirect::route('photos.index');
-    });
+// Route::resource('photos', PhotoController::class)
+//     ->missing(function (Request $request) {
+//         return Redirect::route('photos.index');
+//     });
 
-Route::get('/server', ProvisionServer::class);
+// Route::get('/server', ProvisionServer::class);
 
-Route::controller(VersionController::class)->prefix('version')->name('version.')->group(function () {
-    Route::get('/test', 'index')->middleware('token');
-});
+// Route::controller(VersionController::class)->prefix('version')->name('version.')->group(function () {
+//     Route::get('/test', 'index')->middleware('token');
+// });
