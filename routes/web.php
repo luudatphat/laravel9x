@@ -5,11 +5,15 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProvisionServer;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -28,24 +32,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['guest:admin'])->group(function () {
-    // Login
-    Route::get('login', [LoginController::class, 'index'])->name('login');
-    Route::post('login', [LoginController::class, 'login']);
+// Route::middleware(['guest'])->group(function () {
+//     // Login
+//     Route::get('login', [LoginController::class, 'index'])->name('login');
+//     Route::post('login', [LoginController::class, 'login']);
 
-    // Register 
-    Route::get('register', [LoginController::class, 'register'])->name('register');
-    Route::post('register', [LoginController::class, 'createRegister']);
-});
+//     // Register 
+//     Route::get('register', [LoginController::class, 'register'])->name('register');
+//     Route::post('register', [LoginController::class, 'createRegister']);
+// });
 
-Route::middleware([])->group(function () {
-    // Logout
-    Route::get('logout', [LoginController::class, 'logout']);
+// Route::middleware([])->group(function () {
+//     // Logout
+//     Route::get('logout', [LoginController::class, 'logout']);
 
-    // Home
-    Route::get('home', [DasboardController::class, 'index'])->name('home');
-    Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
-});
+//     // Home
+//     Route::get('home', [DasboardController::class, 'index'])->middleware('auth')->name('home');
+//     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
+// });
 
 
 // Route::get('/photos', [PhotoController::class, 'index']);
@@ -78,3 +82,13 @@ Route::middleware([])->group(function () {
 // // Embed app
 // Route::get('', [AuthController::class, 'index'])->middleware('shopify.auth');
 // Route::get('/auth/callback', [AuthController::class, 'auth']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('products', ProductController::class);
+});

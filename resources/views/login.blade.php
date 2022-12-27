@@ -330,7 +330,7 @@
                 @csrf
                 <input type="text" id="email" class="fadeIn second" name="email" placeholder="email">
                 <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
-                <input type="text" id="type" class="fadeIn third" name="type" placeholder="type">
+                {{-- <input type="text" id="type" class="fadeIn third" name="type" placeholder="type"> --}}
                 <input type="submit" class="fadeIn fourth" value="Log In">
             </form>
 
