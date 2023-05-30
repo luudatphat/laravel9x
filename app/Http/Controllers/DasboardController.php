@@ -19,8 +19,6 @@ class DasboardController extends Controller
     public function index()
     {
         $user = Auth::check();
-        dd($user, 'user');
-
         return view('home');
     }
 

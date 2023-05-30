@@ -17,7 +17,8 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request, LoginService $loginService)
     {
-        if ($loginService->login($request->email, $request->password, $request->type)) {
+        // if ($loginService->login($request->email, $request->password, $request->type)) {
+        if ($loginService->login($request->email, $request->password)) {
             return to_route('home');
         }
         return back()->withErrors('Check email or password');
@@ -43,7 +44,8 @@ class LoginController extends Controller
 
     public function createRegister(LoginRequest $request, LoginService $loginService)
     {
-        $register =  $loginService->register($request->email, $request->password, $request->type);
+        // $register =  $loginService->register($request->email, $request->password, $request->type);
+        $register =  $loginService->register($request->email, $request->password);
         if ($register['status']) {
             return to_route('home');
         }

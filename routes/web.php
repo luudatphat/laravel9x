@@ -6,8 +6,11 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProvisionServer;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
@@ -32,6 +35,7 @@ Route::get('/', function () {
 });
 
 // Route::middleware(['guest:admin'])->group(function () {
+// Route::middleware(['guest'])->group(function () {
 //     // Login
 //     Route::get('login', [LoginController::class, 'index'])->name('login');
 //     Route::post('login', [LoginController::class, 'login']);
@@ -50,6 +54,9 @@ Route::get('/', function () {
 //     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
 // });
 Route::get('/test', [TestController::class, 'test']);
+//     Route::get('home', [DasboardController::class, 'index'])->middleware('auth')->name('home');
+//     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
+// });
 
 
 // Route::get('/photos', [PhotoController::class, 'index']);
@@ -116,3 +123,12 @@ require __DIR__ . '/auth.php';
 // Route::get('/user/delete', [App\Http\Controllers\UsersController::class, 'delete'])->middleware('can:is_admin');
 // Route::get('/user/show', [App\Http\Controllers\UsersController::class,'show'])->middleware('can:is_user');
 // Route::post('/todos/update', [App\Http\Controllers\TodoController::class. 'update'])->middleware('can:update,App\Models\Todo');
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::group(['middleware' => ['auth']], function () {
+//     Route::resource('roles', RoleController::class);
+//     Route::resource('users', UserController::class);
+//     Route::resource('products', ProductController::class);
+// });
