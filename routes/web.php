@@ -49,6 +49,7 @@ Route::get('/', function () {
 //     Route::get('home', [DasboardController::class, 'index'])->name('home');
 //     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
 // });
+Route::get('/test', [TestController::class, 'test']);
 
 
 // Route::get('/photos', [PhotoController::class, 'index']);

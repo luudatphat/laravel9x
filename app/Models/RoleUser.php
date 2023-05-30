@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class RoleUser extends Model
 {
     use HasFactory;
 
@@ -16,8 +16,6 @@ class Order extends Model
      */
     protected $fillable = [
         'user_id',
-        'name',
-        'value',
-        'price',
+        'role_id',
     ];
 }
