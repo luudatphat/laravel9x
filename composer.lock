@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2d9ac29c639e14efcae867f7f24b675",
+    "content-hash": "70dfa7b8e296698be404b0b5465db266",
     "packages": [
         {
             "name": "brick/math",
@@ -133,6 +133,47 @@
                 }
             ],
             "time": "2022-11-20T21:56:14+00:00"
+        },
+        {
+            "name": "crispchat/php-crisp-api",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/crisp-im/php-crisp-api.git",
+                "reference": "9538be02e31d9aaa31f1fe4f48d351a2a1034362"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/crisp-im/php-crisp-api/zipball/9538be02e31d9aaa31f1fe4f48d351a2a1034362",
+                "reference": "9538be02e31d9aaa31f1fe4f48d351a2a1034362",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "tcdent/php-restclient": "^0.1.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Crisp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Baptiste Jamin",
+                    "email": "baptiste@crisp.chat"
+                }
+            ],
+            "description": "Crisp API PHP Wrapper",
+            "support": {
+                "issues": "https://github.com/crisp-im/php-crisp-api/issues",
+                "source": "https://github.com/crisp-im/php-crisp-api/tree/1.7.1"
+            },
+            "time": "2022-02-11T14:45:48+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -5556,6 +5597,62 @@
                 }
             ],
             "time": "2022-11-28T13:41:56+00:00"
+        },
+        {
+            "name": "tcdent/php-restclient",
+            "version": "0.1.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tcdent/php-restclient.git",
+                "reference": "3cd56917108a75ce058a6516f630f43179d7bb68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tcdent/php-restclient/zipball/3cd56917108a75ce058a6516f630f43179d7bb68",
+                "reference": "3cd56917108a75ce058a6516f630f43179d7bb68",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "php": ">=8.0",
+                "phpunit/phpunit": ">=9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "restclient.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Travis Dent",
+                    "email": "tcdent@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A generic REST API client for PHP",
+            "homepage": "http://github.com/tcdent/php-restclient",
+            "keywords": [
+                "api",
+                "client",
+                "curl",
+                "json",
+                "rest",
+                "xml"
+            ],
+            "support": {
+                "issues": "http://github.com/tcdent/php-restclient/issues",
+                "source": "https://github.com/tcdent/php-restclient/tree/0.1.8.1"
+            },
+            "time": "2022-06-15T01:04:35+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

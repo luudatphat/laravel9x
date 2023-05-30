@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CrispController;
 use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
@@ -27,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/crisp-chat', [CrispController::class, 'index']);
+Route::get('/crisp-chat-check', [CrispController::class, 'check']);
+Route::get('/crisp-chat-conversations', [CrispController::class, 'conversations']);
+Route::get('/crisp-chat-create-conversations', [CrispController::class, 'createconversations']);
 
 Route::middleware(['guest:admin'])->group(function () {
     // Login
