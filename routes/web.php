@@ -5,11 +5,13 @@ use App\Http\Controllers\DasboardController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProvisionServer;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\VersionController;
 use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -96,3 +98,14 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+
+// Auth::routes();
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::middleware("auth")->group(function () {
+//     Route::get('plans', [PlanController::class, 'index']);
+//     Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
+//     Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+// });
