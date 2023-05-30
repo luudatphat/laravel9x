@@ -31,24 +31,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['guest:admin'])->group(function () {
-    // Login
-    Route::get('login', [LoginController::class, 'index'])->name('login');
-    Route::post('login', [LoginController::class, 'login']);
+// Route::middleware(['guest:admin'])->group(function () {
+//     // Login
+//     Route::get('login', [LoginController::class, 'index'])->name('login');
+//     Route::post('login', [LoginController::class, 'login']);
 
-    // Register 
-    Route::get('register', [LoginController::class, 'register'])->name('register');
-    Route::post('register', [LoginController::class, 'createRegister']);
-});
+//     // Register 
+//     Route::get('register', [LoginController::class, 'register'])->name('register');
+//     Route::post('register', [LoginController::class, 'createRegister']);
+// });
 
-Route::middleware([])->group(function () {
-    // Logout
-    Route::get('logout', [LoginController::class, 'logout']);
+// Route::middleware([])->group(function () {
+//     // Logout
+//     Route::get('logout', [LoginController::class, 'logout']);
 
-    // Home
-    Route::get('home', [DasboardController::class, 'index'])->name('home');
-    Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
-});
+//     // Home
+//     Route::get('home', [DasboardController::class, 'index'])->name('home');
+//     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
+// });
 
 
 // Route::get('/photos', [PhotoController::class, 'index']);
@@ -109,3 +109,9 @@ require __DIR__ . '/auth.php';
 //     Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
 //     Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
 // });
+
+/* routes > web.php */
+
+// Route::get('/user/delete', [App\Http\Controllers\UsersController::class, 'delete'])->middleware('can:is_admin');
+// Route::get('/user/show', [App\Http\Controllers\UsersController::class,'show'])->middleware('can:is_user');
+// Route::post('/todos/update', [App\Http\Controllers\TodoController::class. 'update'])->middleware('can:update,App\Models\Todo');

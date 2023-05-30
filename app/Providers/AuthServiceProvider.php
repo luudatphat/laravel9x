@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        // Todo::class => TodoPolicy::class,
     ];
 
     /**
@@ -25,6 +27,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('is_admin', function ($user) {
+            return $user->role == 'admin';
+        });
+
+        Gate::define('is_user', function ($user) {
+            return $user->role == 'user';
+            // return $user->role == 'user'
+            //     ? Response::allow('helo', 200, 'true')
+            //     : Response::deny('You must be an administrator.');
+        });
+
+        // User Policy
+        // Gate::define('update-post', [PostPolicy::class, 'update']);
     }
 }
