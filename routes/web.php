@@ -63,7 +63,7 @@ Route::get('/', function () {
 //     Route::get('home', [DasboardController::class, 'index'])->name('home');
 //     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
 // });
-Route::get('/test', [TestController::class, 'test']);
+// Route::get('/test', [TestController::class, 'test']);
 //     Route::get('home', [DasboardController::class, 'index'])->middleware('auth')->name('home');
 //     Route::get('home-admin', [DasboardController::class, 'admin'])->name('home.admin');
 // });
@@ -101,21 +101,21 @@ Route::get('/test', [TestController::class, 'test']);
 // Route::get('/auth/callback', [AuthController::class, 'auth']);
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
-require __DIR__ . '/auth.php';
+// require __DIR__ . '/auth.php';
 
 
 // Auth::routes();
@@ -142,3 +142,8 @@ require __DIR__ . '/auth.php';
 //     Route::resource('users', UserController::class);
 //     Route::resource('products', ProductController::class);
 // });
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
